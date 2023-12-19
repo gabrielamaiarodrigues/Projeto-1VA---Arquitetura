@@ -1,3 +1,17 @@
+# Arquitetura, Primeira VA, 2023.1
+# Grupo: Gabriela Rodrigues, Hudo Leonardo, Lucas Chagas, Louise d'Athayde
+# Questão: 1, letra D
+
+# Resumo: Esse código implementa a função 'strncmp' em assembly MIPS para comparar os primeiros 'num' caracteres de duas strings.
+# As strings 'str1' e 'str2' são definidas no segmento de dados.
+# Na função 'main', são carregados os endereços das strings 'str1' e 'str2' nos registradores $a0 e $a1, respectivamente,
+# e o valor de 'num' é carregado em $a2 para especificar quantos caracteres serão comparados.
+# O código utiliza um loop para comparar caractere por caractere das strings até atingir a quantidade 'num' especificada.
+# Se os caracteres forem iguais, o loop continua até comparar 'num' caracteres.
+# Se os caracteres forem diferentes, o resultado é determinado pela diferença entre os caracteres encontrados.
+# O resultado da comparação é armazenado em $v0 e é impresso no final do programa.
+
+
 # Strings para testes
 .data
 str1: .asciiz "abc"   # String de teste 1

@@ -1,3 +1,14 @@
+# Arquitetura, Primeira VA, 2023.1
+# Grupo: Gabriela Rodrigues, Hudo Leonardo, Lucas Chagas, Louise d'Athayde
+# Questão: Projeto
+
+# Resumo: Esse código demonstra uma breve implementação de um sistema bancário, capaz de gerenciar até 50 clientes, 
+# armazenando nome, CPF, número de conta e dígito verificador.
+# Permite pagamentos em débito ou crédito, além de alterar o limite de crédito por cliente.
+# Registra até 50 transações de débito e crédito por cliente, computando juros sobre o crédito.
+# Mantém um extrato detalhado das transações, permitindo pagamento parcial ou total da fatura do cartão de crédito.
+# Realiza saques, depósitos, encerramento de conta e configuração de data/hora.
+
 .data
   # Strings de comando
   string_comando_conta_cadastrar: .asciiz "conta_cadastar"
@@ -20,12 +31,12 @@
 
 
 
- ################# STRINGS PARA INTERAÇÃO COM O USU�?RIO #################
+ ################# STRINGS PARA INTERAÃ‡ÃƒO COM O USUÃ?RIO #################
  
-  #erros genéricos 
+  #erros genÃ©ricos 
   string_erro_cliente_n_existe: .asciiz "Falha: cliente inexistente" 		#usado por diversos comandos.
   string_erro_saldo_insuficiente: .asciiz "Falha: saldo insuficente"		#usando pelas transferencias, pgmento de fatura
-  string_comando_invalido: .asciiz "Comando invalido" 				#usando quando o usuário entrar algo que não eh um comando válido.
+  string_comando_invalido: .asciiz "Comando invalido" 				#usando quando o usuÃ¡rio entrar algo que nÃ£o eh um comando vÃ¡lido.
   string_exit: .asciiz "Obigado e volte sempre!"				#bye bye
   string_separador: .asciiz " - "
   string_reais: .asciiz "R$ "
@@ -34,22 +45,22 @@
   string_funcao_nao_desenvolvida: .ascizz "Essa funcao ainda nao foi desenvolvida"
   
   #erros do conta_cadastrar
-  string_erro_sintaxe_conta_cadastrar: .asciiz "Erro de sintaxe: conta_cadastrar-<CPF>-<numero_da_conta>-<nome_do_cliente>" 	#Acho q talvez a gente não use
-  string_erro_cpf_usado_conta_cadastrar: .asciiz "Já existe conta neste CPF"
-  string_erro_numero_usado_conta_cadastrar: .asciiz "Número da conta já em uso"
+  string_erro_sintaxe_conta_cadastrar: .asciiz "Erro de sintaxe: conta_cadastrar-<CPF>-<numero_da_conta>-<nome_do_cliente>" 	#Acho q talvez a gente nÃ£o use
+  string_erro_cpf_usado_conta_cadastrar: .asciiz "JÃ¡ existe conta neste CPF"
+  string_erro_numero_usado_conta_cadastrar: .asciiz "NÃºmero da conta jÃ¡ em uso"
   string_conta_cadastrar_sucesso: .asciiz "conta cadastrada :)"
 
   #mensagens do conta_format
-  string_erro_invalida_conta_format: .asciiz "Numero de conta não existe"
+  string_erro_invalida_conta_format: .asciiz "Numero de conta nÃ£o existe"
   string_confirmacao_format: .asciiz "Tem certeza que quer formatar a conta? "
   
   #erros dos extratos
-  string_erro_extrato_debito: .asciiz "Número de conta inválido"
-  string_erro_extrato_credito: .asciiz "Número de conta inválido"  
+  string_erro_extrato_debito: .asciiz "NÃºmero de conta invÃ¡lido"
+  string_erro_extrato_credito: .asciiz "NÃºmero de conta invÃ¡lido"  
   
   #mensagens das transferencias
   string_sucesso_transferencia: .asciiz "Pagamento realizado com sucesso"			#para os 2 tipos de transferencias
-  string_erro_transferencia_limite_insuficiente: .asciiz "Falha: limite insuficente"		#para transferencia no crédito
+  string_erro_transferencia_limite_insuficiente: .asciiz "Falha: limite insuficente"		#para transferencia no crÃ©dito
   
   #erros pagar_fatura
   string_erro_pagar_fatura_conta_invalida: .asciiz "Falha: cliente inexistente"
@@ -58,15 +69,15 @@
   string_erro_sacar_saldo_insuficiente: .asciiz "Falha: saldo insuficiente"
   
   #erro conta_fechar
-  string_erro_conta_fechar_cpf_n_existe: .asciiz "Falha: CPF não possui cadastro"
-  string_erro_conta_fechar_saldo_n_0: .asciiz "Falha: saldo devedor ainda não quitado. Saldo da conta corrente R$ " 		#tem que colocar o QUANTO TA DEVENDO
-  string_erro_conta_fechar_divida_n_0: .asciiz "Falha: saldo devedor ainda não quitado. Limite de crédito devido: R$ "		#tem que colocar o QUANTO TA DEVENDO
+  string_erro_conta_fechar_cpf_n_existe: .asciiz "Falha: CPF nÃ£o possui cadastro"
+  string_erro_conta_fechar_saldo_n_0: .asciiz "Falha: saldo devedor ainda nÃ£o quitado. Saldo da conta corrente R$ " 		#tem que colocar o QUANTO TA DEVENDO
+  string_erro_conta_fechar_divida_n_0: .asciiz "Falha: saldo devedor ainda nÃ£o quitado. Limite de crÃ©dito devido: R$ "		#tem que colocar o QUANTO TA DEVENDO
   
   #erro data_hora
-  string_erro_data_hora: .asciiz "Falha: data e/ou horas inválidas"
+  string_erro_data_hora: .asciiz "Falha: data e/ou horas invÃ¡lidas"
   
   #String help
-  string_help: .asciiz "Comandos disponíveis:\n\comando: conta_cadastrar-<option1>-<option2>-<option3>\n\descricao: Realiza o cadastro de um cliente. <option1> deve fornecer o CPF do cliente (XXXXXXXXX); <option2> deve fornecer o número da conta corrente do cliente (XXXXXX); <option3> deve fornecer o nome do cliente.\n\n\comando: conta_format-<option1>\n\descricao: Apaga todos os registros de transações do cliente. <option1> deve fornecer a conta do cliente no formato XXXXXX-X (com dígito verificador).\n\n\comando: debito_extrato-<option1>\n\descricao: Fornece um relatório das transações de débito do cliente, listando cada transação, seus respectivos nomes das contas, valores e datas. <option1> deve fornecer a conta do cliente no formato XXXXXX-X.\n\n\comando: credito_extrato-<option1>\n\descricao: Fornece um relatório das transações de cartão de crédito do cliente, listando cada transação, seus respectivos nomes das contas, valores e datas. <option1> deve fornecer a conta do cliente no formato XXXXXX-X.\n\n\comando: transferir_debito-<option1>-<option2>-<option3>\n\descricao: Realiza uma transferência (crédito em conta corrente) da conta do cliente 1 para a conta do cliente 2, do valor especificado pela <option3> em centavos, na data atual.\n\n\comando: transferir_credito-<option1>-<option2>-<option3>\n\descricao: Realiza uma transferência (crédito em conta corrente) do limite de crédito do cliente 2 para a conta do cliente 1, do valor especificado pela <option3> em centavos, na data atual.\n\n\comando: pagar_fatura-<option1>-<option2>-<option3>\n\descricao: Paga parcial ou totalmente a fatura do cliente especificado na conta <option1>, com o valor especificado pela <option2> em centavos, via saldo de conta corrente ('S') ou pagamento externo ('E').\n\n\comando: sacar-<option1>-<option2>\n\descricao: Decrementa o saldo da conta especificada pela <option1> no formato XXXXXX-X, pelo valor especificado pela <option2> em centavos no formato XXXXXX.\n\n\comando: depositar-<option1>-<option2>\n\descricao: Incrementa o saldo da conta especificada pela <option1> no formato XXXXXX-X, pelo valor especificado pela <option2> em centavos no formato XXXXXX.\n\n\comando: alterar_limite-<option1>-<option2>\n\descricao: Altera o limite do cliente especificado pela conta XXXXXX-X. <option1> fornece o número da conta e <option2> o novo limite em centavos (XXXXXX).\n\n\comando: conta_fechar-<option1>\n\descricao: Encerra a conta. Apenas permitido se o saldo da conta e o saldo devedor de crédito forem nulos. Retorna 'Conta fechada com sucesso' e apaga os registros de transações.\n\n\comando: data_hora-<option1>-<option2>\n\descricao: Configura a data e hora do sistema de acordo com <option1> (DDMMAAAA) e <option2> (HHMMSS).\n\n\comando: salvar\n\descricao: Salva todas as informações registradas em um arquivo externo.\n\n\comando: recarregar\n\descricao: Recarrega as informações salvas no arquivo externo na execução atual do programa. Modificações não salvas serão perdidas e as informações salvas anteriormente recuperadas.\n\n\comando: formatar\n\descricao: Apaga todas as informações da execução atual do programa, incluindo clientes e transações."
+  string_help: .asciiz "Comandos disponÃ­veis:\n\comando: conta_cadastrar-<option1>-<option2>-<option3>\n\descricao: Realiza o cadastro de um cliente. <option1> deve fornecer o CPF do cliente (XXXXXXXXX); <option2> deve fornecer o nÃºmero da conta corrente do cliente (XXXXXX); <option3> deve fornecer o nome do cliente.\n\n\comando: conta_format-<option1>\n\descricao: Apaga todos os registros de transaÃ§Ãµes do cliente. <option1> deve fornecer a conta do cliente no formato XXXXXX-X (com dÃ­gito verificador).\n\n\comando: debito_extrato-<option1>\n\descricao: Fornece um relatÃ³rio das transaÃ§Ãµes de dÃ©bito do cliente, listando cada transaÃ§Ã£o, seus respectivos nomes das contas, valores e datas. <option1> deve fornecer a conta do cliente no formato XXXXXX-X.\n\n\comando: credito_extrato-<option1>\n\descricao: Fornece um relatÃ³rio das transaÃ§Ãµes de cartÃ£o de crÃ©dito do cliente, listando cada transaÃ§Ã£o, seus respectivos nomes das contas, valores e datas. <option1> deve fornecer a conta do cliente no formato XXXXXX-X.\n\n\comando: transferir_debito-<option1>-<option2>-<option3>\n\descricao: Realiza uma transferÃªncia (crÃ©dito em conta corrente) da conta do cliente 1 para a conta do cliente 2, do valor especificado pela <option3> em centavos, na data atual.\n\n\comando: transferir_credito-<option1>-<option2>-<option3>\n\descricao: Realiza uma transferÃªncia (crÃ©dito em conta corrente) do limite de crÃ©dito do cliente 2 para a conta do cliente 1, do valor especificado pela <option3> em centavos, na data atual.\n\n\comando: pagar_fatura-<option1>-<option2>-<option3>\n\descricao: Paga parcial ou totalmente a fatura do cliente especificado na conta <option1>, com o valor especificado pela <option2> em centavos, via saldo de conta corrente ('S') ou pagamento externo ('E').\n\n\comando: sacar-<option1>-<option2>\n\descricao: Decrementa o saldo da conta especificada pela <option1> no formato XXXXXX-X, pelo valor especificado pela <option2> em centavos no formato XXXXXX.\n\n\comando: depositar-<option1>-<option2>\n\descricao: Incrementa o saldo da conta especificada pela <option1> no formato XXXXXX-X, pelo valor especificado pela <option2> em centavos no formato XXXXXX.\n\n\comando: alterar_limite-<option1>-<option2>\n\descricao: Altera o limite do cliente especificado pela conta XXXXXX-X. <option1> fornece o nÃºmero da conta e <option2> o novo limite em centavos (XXXXXX).\n\n\comando: conta_fechar-<option1>\n\descricao: Encerra a conta. Apenas permitido se o saldo da conta e o saldo devedor de crÃ©dito forem nulos. Retorna 'Conta fechada com sucesso' e apaga os registros de transaÃ§Ãµes.\n\n\comando: data_hora-<option1>-<option2>\n\descricao: Configura a data e hora do sistema de acordo com <option1> (DDMMAAAA) e <option2> (HHMMSS).\n\n\comando: salvar\n\descricao: Salva todas as informaÃ§Ãµes registradas em um arquivo externo.\n\n\comando: recarregar\n\descricao: Recarrega as informaÃ§Ãµes salvas no arquivo externo na execuÃ§Ã£o atual do programa. ModificaÃ§Ãµes nÃ£o salvas serÃ£o perdidas e as informaÃ§Ãµes salvas anteriormente recuperadas.\n\n\comando: formatar\n\descricao: Apaga todas as informaÃ§Ãµes da execuÃ§Ã£o atual do programa, incluindo clientes e transaÃ§Ãµes."
 
   string_nome_do_arquivo: .asciiz "./banco.txt"
   string_salvar_sucesso: .asciiz "Dados salvos com sucesso"
@@ -1001,13 +1012,13 @@ strcmp:
         # Se os caracteres forem iguais e o primeiro caractere for NULL, sai do loop
         beqz $t0, end
 
-        # Move para o pr�ximo caractere nas strings
-        addi $a0, $a0, 1   # Incrementa o endere�o de str1
-        addi $a1, $a1, 1   # Incrementa o endere�o de str2
+        # Move para o próximo caractere nas strings
+        addi $a0, $a0, 1   # Incrementa o endereço de str1
+        addi $a1, $a1, 1   # Incrementa o endereço de str2
         j strcmp_loop             # Repete o loop
 
     end_less_greater:
-        # Se os caracteres forem diferentes, define $v0 conforme necess�rio
+        # Se os caracteres forem diferentes, define $v0 conforme necessário
         blt $t0, $t1, less_than    # Se $t0 < $t1, define $v0 como -1
         bgt $t0, $t1, greater_than # Se $t0 > $t1, define $v0 como 1
         j end_equal                # Se os caracteres forem iguais, vai para end_equal
@@ -1023,13 +1034,13 @@ strcmp:
         j end
 
     end_equal:
-        # Se os caracteres forem iguais, continua para os pr�ximos caracteres
-        addi $a0, $a0, 1   # Incrementa o endere�o de str1
-        addi $a1, $a1, 1   # Incrementa o endere�o de str2
+        # Se os caracteres forem iguais, continua para os próximos caracteres
+        addi $a0, $a0, 1   # Incrementa o endereço de str1
+        addi $a1, $a1, 1   # Incrementa o endereço de str2
         j loop             # Repete o loop
 
     end:
-        jr $ra             # Retorna para a fun��o chamadora
+        jr $ra             # Retorna para a função chamadora
 
   # Funcao que recebe um endereco de string e retorna o tamanho da string
   # Argumentos:
@@ -1062,7 +1073,7 @@ strcmp:
       lb $t2, 0($a1)        # Carrega o caractere da string em $t2
       beqz $t2, verificar_numero_conta_end     # Se o caractere for zero (fim da string), saia do loop
       addi $t1, $t1, 1       # Incrementa o contador t1
-      addi $a1, $a1, 1       # Avan�a para o pr�ximo caractere da string
+      addi $a1, $a1, 1       # Avança para o próximo caractere da string
       j verificar_numero_conta_loop 
         
     verificar_numero_conta_end:
@@ -1115,7 +1126,7 @@ strcmp:
       lb $t2, 0($a0)        # Carrega o caractere da string em $t2
       beqz $t2, verificar_cpf_end     # Se o caractere for zero (fim da string), saia do loop
       addi $t1, $t1, 1       # Incrementa o contador t1
-      addi $a0, $a0, 1       # Avan�a para o pr�ximo caractere da string
+      addi $a0, $a0, 1       # Avança para o próximo caractere da string
       j verificar_cpf_loop 
     
     
@@ -1157,15 +1168,15 @@ strcmp:
     #jr $ra               # Jump to the address stored in $ra
 
 strcpy:
-    addu $v0, $zero, $a0         # Inicializa $v0 com o endere�o de destino
+    addu $v0, $zero, $a0         # Inicializa $v0 com o endereço de destino
 
     loop:
      lbu $t0, 0($a1)              # Carrega o byte atual da string de origem em $t0
      sb $t0, 0($a0)               # Armazena o byte atual na string de destino
      beqz $t0, strcpy_end                # Se o byte atual for NULL, termina o loop
-     addiu $a0, $a0, 1            # Incrementa o endere�o de destino
-     addiu $a1, $a1, 1            # Incrementa o endere�o de origem
-     j loop                       # Volta para o in�cio do loop
+     addiu $a0, $a0, 1            # Incrementa o endereço de destino
+     addiu $a1, $a1, 1            # Incrementa o endereço de origem
+     j loop                       # Volta para o início do loop
 
     strcpy_end:
      jr $ra 

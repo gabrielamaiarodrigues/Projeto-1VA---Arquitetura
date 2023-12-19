@@ -1,3 +1,16 @@
+# Arquitetura, Primeira VA, 2023.1
+# Grupo: Gabriela Rodrigues, Hudo Leonardo, Lucas Chagas, Louise d'Athayde
+# Questão: 2
+
+# Resumo: # Esse código implementa a interação entre um receptor e um transmissor simulados.
+# Na função 'main', o programa espera pela disponibilidade de uma tecla pressionada lendo o registrador de controle do receptor.
+# Quando uma tecla está disponível, ela é lida do registrador de dados do receptor (RDR) e armazenada em $a0.
+# Em seguida, o código aguarda a disponibilidade para exibição, lendo o registrador de controle do transmissor.
+# Quando o transmissor está pronto para exibir, a tecla armazenada em $a0 é enviada para o registrador de dados do transmissor (TDR).
+# Após isso, ocorre uma chamada de sistema para exibir a tecla pressionada.
+# O programa continua esse ciclo, esperando pela próxima tecla pressionada e exibindo-a, enquanto houver interação do usuário.
+# Os endereços dos registradores (RCR, RDR, TCR, TDR) são definidos como constantes no segmento de dados.
+
 .data
     # Constantes para endereços de registradores
     # Receiver Control Register (Ready Bit)

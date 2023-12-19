@@ -1,3 +1,17 @@
+# Arquitetura, Primeira VA, 2023.1
+# Grupo: Gabriela Rodrigues, Hudo Leonardo, Lucas Chagas, Louise d'Athayde
+# Questão: 1, letra C
+
+# Resumo: Esse código implementa a função 'strcmp' em assembly MIPS para comparar duas strings.
+# Na função 'main', são carregados os endereços das strings 'str1' e 'str2' nos registradores $a0 e $a1.
+# Em seguida, é chamada a função 'strcmp'.
+# A função 'strcmp' compara as strings caractere por caractere em um loop.
+# Se os caracteres forem iguais, continua a comparação; se forem diferentes, define o valor de retorno $v0.
+# Se as strings forem de comprimentos diferentes mas até o ponto em que são iguais, o resultado é determinado pela
+# diferença de caracteres nesse ponto. Se as strings forem idênticas, o resultado será 0.
+# O código finaliza imprimindo o resultado da comparação e termina o programa.
+# As strings 'str1' e 'str2' são definidas no segmento de dados para serem usadas como teste na função 'strcmp'.
+
 .text
 main:
     # Load words (str1 = a0, str2 = a1)
